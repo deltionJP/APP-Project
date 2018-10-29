@@ -1,8 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View,Image } from 'react-native';
+import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity ,Button } from 'react-native';
 // import TopStyle from 'assets/style/TopStyle.js';
 
 export default class App extends React.Component {
+    constructor(){
+            super();
+            this.state={
+                text:'PZ'
+
+            }
+        }
+    onPress = () => {
+       // this.setState({
+       //   count: this.state.count+1
+       // })
+       console.log(this.state.text);
+     }
+
+    ding = async() =>{
+            console.log("hallo");
+            let currentWeather = 'https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json';
+            // let currentWeather = 'https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/KNMI_Sensors_Zwolle_(gegevens_per_uur)/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json';
+            let response = await fetch (currentWeather);
+            let jsonObject = await response.json();
+            console.log(jsonObject);
+    }
+
   render() {
     return (
         <View style={{flex:1}}>
@@ -17,7 +40,21 @@ export default class App extends React.Component {
                       }}
                       source={require('./assets/img/senshagen-beeldmerk.jpg')}
                   />
-                  <View style={{backgroundColor: 'rgba(255, 255, 255, 0.5)', flex: 1}}></View>
+                  <View style={{backgroundColor: 'rgba(255, 255, 255, 0.5)', flex: 1}}>
+                      <View style={{flex: 2, height: 100}}></View>
+                          <View style={{flex: 3}}>
+                              <TextInput
+                                  style={{height: 40, width: '100%',borderColor: 'gray', borderWidth: 1, backgroundColor: "white"}}
+                                  onChangeText={(text) => this.setState({text})}
+                                  value={this.state.text}
+                                  keyboardType='numeric'
+                              />
+                              <TouchableOpacity onPress={this.onPress} style={{backgroundColor: '#b5b5b5', width: 260, height: 40, borderRadius: 5, alignItems: 'center',justifyContent:'center', alignSelf: 'center', marginTop: 10}}>
+                                <Text>Sensor toevoegen</Text>
+                               </TouchableOpacity>
+
+                          </View>
+                  </View>
         </View>
     );
   }
