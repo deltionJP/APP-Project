@@ -6,10 +6,21 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Text,
+  Image,
+  TextInput,
 } from 'react-native';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 class SignInScreen extends React.Component {
+    constructor(){
+        super();
+        this.state={
+            text:'PZ',
+            sensData: ''
+
+        }
+    }
   static navigationOptions = {
     title: 'Please sign in',
   };
@@ -18,27 +29,57 @@ class SignInScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Button title="Sign in!" onPress={this._signInAsync} />
+        <Text>{this.state.text}</Text>
       </View>
     );
   }
 
   _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('App');
+      if (this.state.text) {
+          await AsyncStorage.setItem('userToken', 'abc');
+          this.props.navigation.navigate('App');
+      }
+      else {
+          this.props.navigation.navigate('AddSens');
+      }
   };
 }
 
-class HomeScreen extends React.Component {
+class AddSens extends React.Component {
   static navigationOptions = {
     title: 'Welcome to the app!',
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Button title="Show me more of the app" onPress={this._showMoreApp} />
-        <Button title="Actually, sign me out :)" onPress={this._signOutAsync} />
-      </View>
+        <View style={{flex:1}}>
+                  <Image
+                      style={{
+                          // backgroundColor: '#ccc',
+                          flex: 5,
+                          position: 'absolute',
+                          width: '100%',
+                          height: '100%',
+                          justifyContent: 'center',
+                      }}
+                      source={require('./assets/img/senshagen-beeldmerk.jpg')}
+                  />
+                  <View style={{backgroundColor: 'rgba(255, 255, 255, 0.5)', flex: 1}}>
+                      <View style={{flex: 2, height: 100}}></View>
+                          <View style={{flex: 3}}>
+                              <TextInput
+                                  style={{height: 40, width: '100%',borderColor: 'gray', borderWidth: 1, backgroundColor: "white"}}
+                                  onChangeText={(text) => this.setState({text})}
+                                  value={this.state.text}
+                                  keyboardType='numeric'
+                              />
+                              <TouchableOpacity onPress={this.onPress} style={{backgroundColor: '#b5b5b5', width: 260, height: 40, borderRadius: 5, alignItems: 'center',justifyContent:'center', alignSelf: 'center', marginTop: 10}}>
+                                <Text>Sensor toevoegen</Text>
+                               </TouchableOpacity>
+
+                          </View>
+                  </View>
+        </View>
     );
   }
 
@@ -106,7 +147,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppStack = createStackNavigator({ Home: HomeScreen, Other: OtherScreen });
+const AppStack = createStackNavigator({ AddSens: AddSens, Other: OtherScreen });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 
 export default createSwitchNavigator(
