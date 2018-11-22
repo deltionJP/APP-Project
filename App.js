@@ -1,4 +1,4 @@
-
+// https://appdividend.com/2018/03/20/react-native-navigation-example-tutorial/
 import React, { Component } from 'react';
 import {
   Platform,

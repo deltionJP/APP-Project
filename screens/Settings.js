@@ -1,7 +1,7 @@
 // Settings.js
 
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity,TextInput, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity,TextInput, Image,AsyncStorage } from 'react-native';
 
 export class Settings extends Component {
     constructor(){
@@ -12,27 +12,29 @@ export class Settings extends Component {
 
             }
         }
-    onPress = () => {
-       this.ding();
-       console.log(this.state.text);
-       this.props.navigation.navigate('HomeScreen');
-     }
-     componentDidMount(){
-         this.ding();
-     }
-    ding = async() =>{
-            console.log("hallo");
-            let currentWeather = 'https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/';
-            let filter = 'query?where=label%20%3D%20%27'+[this.state.text]+'%27&outFields=*&outSR=4326&f=json'
-            // let currentWeather = 'https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/KNMI_Sensors_Zwolle_(gegevens_per_uur)/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json';
-            let response = await fetch (currentWeather+filter);
-            let jsonObject = await response.json();
-            this.setState({
-                sensData: jsonObject
-            });
-            console.log(this.state.sensData.features);
 
-    }
+    onPress = () => {
+         fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20%27'+[this.state.text]+'%27&outFields=*&outSR=4326&f=json')
+        // orderbydate // fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20'+[this.state.text]+'&outFields=*&orderByFields=timestamp_from DESC&outSR=4326&f=json')
+            .then(response => response.json())
+            .then(async (data) => {
+                console.log('test2')
+                this.setState({
+                  isLoading: false,
+                  sensData: data.features,
+                });
+                // try {
+                let newsensdata = data.features.slice(0, 5)
+                    await AsyncStorage.setItem('thedata',JSON.stringify(newsensdata))
+                      // const value = await AsyncStorage.getItem('thedata');
+                      // console.log("setting.js",value);
+                      this.props.navigation.navigate('HomeScreen');
+                // } catch (e) {
+
+                // }
+            })
+            .catch()
+        }
 
   render() {
     return (
