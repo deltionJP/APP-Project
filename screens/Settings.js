@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity,TextInput, Image,AsyncStorage } from 'react-native';
+import moment from 'moment';
+import 'moment/min/moment-with-locales';
 
 export class Settings extends Component {
     constructor(){
@@ -14,7 +16,7 @@ export class Settings extends Component {
         }
 
     onPress = () => {
-         fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20%27'+[this.state.text]+'%27&outFields=*&outSR=4326&f=json')
+        fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20%27'+[this.state.text]+'%27&outFields=*&outSR=4326&f=json')
         // orderbydate // fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20'+[this.state.text]+'&outFields=*&orderByFields=timestamp_from DESC&outSR=4326&f=json')
             .then(response => response.json())
             .then(async (data) => {
