@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, FlatList,StyleSheet } from 'react-native';
-import moment from 'moment';
+// import moment from 'moment';
 import 'moment/min/moment-with-locales';
+import moment from 'moment/min/moment-with-locales';
 
 export class Home extends Component {
     constructor(){
@@ -16,17 +17,22 @@ export class Home extends Component {
         }
 
     componentDidMount(){
-      moment.locale(); 
+      moment.locale('nl');
       this.hallo();
     }
     hallo = async() =>{
       const value = await AsyncStorage.getItem('thedata');
+      const sensor = await AsyncStorage.getItem('sensorNumber');
+      // console.log(sensor);
+      
+
       // console.log("Home.js",value);
       this.setState({
         sensorData: JSON.parse(value),
-        thedata: []
+        thedata: [],
+        sensorLabel: sensor
+
       });
-      // console.log(this.state.sensorData);
       this.new();
     }
 
@@ -39,8 +45,8 @@ export class Home extends Component {
         
         let timefrom = moment(data.timestamp_from).format('LT');
         let timeto = moment(data.timestamp_to).format('LT');
-        console.log(data)
-        console.log(timefrom)
+        // console.log(data)
+        // console.log(timefrom)
 
 
         rivmData.push({ "id": data.OBJECTID, "label": data.label, "value_NO2": data.value_NO2, 
@@ -49,7 +55,7 @@ export class Home extends Component {
                         "unit_NO2": data.unit_NO2, "unit_P": data.unit_P, "unit_PM10": data.unit_PM10,
                         "unit_RH": data.unit_RH, "unit_T": data.unit_T});
 
-        console.log(rivmData);
+        // console.log(rivmData);
         this.setState({
           thedata: rivmData
         })
@@ -59,22 +65,32 @@ export class Home extends Component {
     return (
       
         <View style={styles.container} >
-        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Sensor PZ001</Text>
+        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Sensor {this.state.sensorLabel} </Text>
 
           <FlatList data={this.state.thedata}
           renderItem={({ item }) =>
-          <View style={styles.topListStyle}>
-              <Text style={{ fontWeight: 'bold', color: '#e1e3e8'}}>{item.timefr} -- {item.timetoo}</Text>
-            <View style={styles.liststyle}>
-                <Text>Stikstofdioxide: {item.value_NO2} {item.unit_NO2}</Text>
-                <Text>Luchtdruk: {item.value_P} {item.unit_P}</Text>
-                <Text>Fijnstof: {item.value_PM10} {item.unit_PM10}</Text>
-                <Text>{item.value_RH} {item.unit_RH}</Text>
-                <Text>Temperatuur: {item.value_T} {item.unit_T}</Text>
-            </View>
-          </View>
+            <View style={{ backgroundColor: "#2054d6", marginBottom: 10}}>
+            <Text style={{ fontWeight: 'bold', color: '#e1e3e8'}}>Gementen tijd: {item.timefr} tot {item.timetoo}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ marginTop: 8, marginBottom: 8, width: '50%' }}>
+                <Text style={styles.textstyle}>Stikstofdioxide:</Text>
+                <Text style={styles.textstyle}>Luchtdruk:</Text>
+                <Text style={styles.textstyle}>Fijnstof:</Text>
+                <Text style={styles.textstyle}>GeenIdee:</Text>
+                <Text style={styles.textstyle}>Temperatuur:</Text>
 
-          }
+              </View>
+              <View style={{ marginTop: 8, marginBottom: 8, width: '50%' }}>
+                <Text style={styles.textstyle}>{item.value_NO2} {item.unit_NO2}</Text> 
+                <Text style={styles.textstyle}>{item.value_P} {item.unit_P}</Text>
+                <Text style={styles.textstyle}>{item.value_PM10} {item.unit_PM10}</Text>
+                <Text style={styles.textstyle}>{item.value_RH} {item.unit_RH}</Text>
+                <Text style={styles.textstyle}>{item.value_T} {item.unit_T}</Text>
+              </View>
+            </View>
+            </View>
+  
+            }
           keyExtractor={(item) => item} />
       </View>
       
@@ -86,7 +102,12 @@ export class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 50,
+    margin: 30,
+  },
+  textstyle:{
+    marginTop: 5,
+    color: '#c2ccce',
+    fontWeight: 'bold'
   },
   topListStyle:{
     backgroundColor: "#5d89f7",

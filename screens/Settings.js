@@ -1,7 +1,7 @@
 // Settings.js
 
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity,TextInput, Image,AsyncStorage } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity,TextInput, Image,AsyncStorage, Alert } from 'react-native';
 import moment from 'moment';
 import 'moment/min/moment-with-locales';
 
@@ -25,15 +25,32 @@ export class Settings extends Component {
                   isLoading: false,
                   sensData: data.features,
                 });
-                // try {
-                let newsensdata = data.features.slice(0, 5)
+                try {
+                let newsensdata = data.features.slice(0, 5);
+                if(newsensdata[0]){
                     await AsyncStorage.setItem('thedata',JSON.stringify(newsensdata))
+                    await AsyncStorage.setItem('sensorNumber', this.state.text)
                       // const value = await AsyncStorage.getItem('thedata');
                       // console.log("setting.js",value);
                       this.props.navigation.navigate('HomeScreen');
-                // } catch (e) {
+                }
+                else{
+                     console.log(newsensdata[0])
+                    Alert.alert(
+                        'Sensor fout',
+                        'Er is geen data gevonden voor deze sensor',
+                        [
+                            { text: 'Reset', onPress: () =>{
+                                console.log('Er is een foutieve sensor ingevoerd');
+                                this.setState({text: "PZ"})
+                            }  },
+                        ],
+                        
+                    )
+                }
+                } catch (e) {
 
-                // }
+                }
             })
             .catch()
         }
