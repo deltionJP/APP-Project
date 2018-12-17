@@ -15,6 +15,7 @@ const AppNavigator = StackNavigator({
   HomeScreen: { screen: Home }
 });
 
+
 export default class App extends Component {
   render() {
     return (

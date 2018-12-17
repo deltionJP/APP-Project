@@ -6,6 +6,9 @@ import moment from 'moment';
 import 'moment/min/moment-with-locales';
 
 export class Settings extends Component {
+    static navigationOptions = {
+        header: null// !!! Hide Header
+    }
     constructor(){
             super();
             this.state={
@@ -14,7 +17,6 @@ export class Settings extends Component {
 
             }
         }
-
     onPress = () => {
         fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20%27'+[this.state.text]+'%27&outFields=*&outSR=4326&f=json')
         // orderbydate // fetch('https://services1.arcgis.com/3YlK2vfHGZtonb1r/arcgis/rest/services/RIVM_Sensors_Zwolle_(gegevens_per_uur_UTC0)/FeatureServer/0/query?where=label%20%3D%20'+[this.state.text]+'&outFields=*&orderByFields=timestamp_from DESC&outSR=4326&f=json')
@@ -26,7 +28,7 @@ export class Settings extends Component {
                   sensData: data.features,
                 });
                 try {
-                let newsensdata = data.features.slice(0, 5);
+                let newsensdata = data.features.slice(0, 10);
                 if(newsensdata[0]){
                     await AsyncStorage.setItem('thedata',JSON.stringify(newsensdata))
                     await AsyncStorage.setItem('sensorNumber', this.state.text)
@@ -71,7 +73,7 @@ export class Settings extends Component {
                   />
                   <View style={{backgroundColor: 'rgba(255, 255, 255, 0.5)', flex: 1}}>
                       <View style={{flex: 2, height: 100}}></View>
-                          <View style={{flex: 3}}>
+                          <View style={{flex: 3, margin: 10}}>
                               <TextInput
                                   style={{height: 40, width: '100%',borderColor: 'gray', borderWidth: 1, backgroundColor: "white"}}
                                   onChangeText={(text) => this.setState({text})}

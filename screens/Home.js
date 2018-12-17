@@ -1,12 +1,15 @@
 // Home.js
 
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, FlatList,StyleSheet } from 'react-native';
+import { View, Text, AsyncStorage, FlatList,StyleSheet, Image } from 'react-native';
 // import moment from 'moment';
 import 'moment/min/moment-with-locales';
 import moment from 'moment/min/moment-with-locales';
 
 export class Home extends Component {
+  static navigationOptions = {
+    header: null// !!! Hide Header
+  }
     constructor(){
             super();
             this.state={
@@ -63,14 +66,25 @@ export class Home extends Component {
     }
   render() {
     return (
-      
+      <View style={styles.rootView}>
+        <Image
+          style={{
+            backgroundColor: '#ccc',
+            flex: 5,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+          }}
+          source={require('../assets/img/header-background.png')}
+        />
         <View style={styles.container} >
         <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Sensor {this.state.sensorLabel} </Text>
 
           <FlatList data={this.state.thedata}
           renderItem={({ item }) =>
-            <View style={{ backgroundColor: "#2054d6", marginBottom: 10}}>
-            <Text style={{ fontWeight: 'bold', color: '#e1e3e8'}}>Gementen tijd: {item.timefr} tot {item.timetoo}</Text>
+            <View style={{ backgroundColor: "#2054d6", marginBottom: 10, padding: 10}}>
+            <Text style={{ fontWeight: 'bold', color: '#e1e3e8'}}>Gementen tijd: van {item.timefr} tot {item.timetoo}</Text>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ marginTop: 8, marginBottom: 8, width: '50%' }}>
                 <Text style={styles.textstyle}>Stikstofdioxide:</Text>
@@ -93,13 +107,16 @@ export class Home extends Component {
             }
           keyExtractor={(item) => item} />
       </View>
-      
+      </View>
 
      
     )
   }
 }
 const styles = StyleSheet.create({
+  rootView:{
+    flex: 1,
+  },
   container: {
     flex: 1,
     margin: 30,
