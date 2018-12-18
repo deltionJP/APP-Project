@@ -6,11 +6,11 @@ import {
   Text,
   View
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Settings from './screens/Settings';
 import Home from './screens/Home';
 
-const AppNavigator = StackNavigator({
+const AppNavigator = createStackNavigator({
   SettingScreen: { screen: Settings },
   HomeScreen: { screen: Home }
 });

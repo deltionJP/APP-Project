@@ -69,9 +69,9 @@ export class Settings extends Component {
                           height: '100%',
                           justifyContent: 'center',
                       }}
-                      source={require('../assets/img/senshagen-beeldmerk.jpg')}
+                      source={require('../assets/img/niceZwolle.png')}
                   />
-                  <View style={{backgroundColor: 'rgba(255, 255, 255, 0.5)', flex: 1}}>
+                  <View style={{ flex: 1}}>
                       <View style={{flex: 2, height: 100}}></View>
                           <View style={{flex: 3, margin: 10}}>
                               <TextInput

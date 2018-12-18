@@ -79,12 +79,12 @@ export class Home extends Component {
           source={require('../assets/img/header-background.png')}
         />
         <View style={styles.container} >
-        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Sensor {this.state.sensorLabel} </Text>
+        <Text style={{ fontSize: 25, fontWeight: 'bold', borderBottomWidth: 2, }}>Sensor {this.state.sensorLabel} </Text>
 
           <FlatList data={this.state.thedata}
           renderItem={({ item }) =>
-            <View style={{ backgroundColor: "#2054d6", marginBottom: 10, padding: 10}}>
-            <Text style={{ fontWeight: 'bold', color: '#e1e3e8'}}>Gementen tijd: van {item.timefr} tot {item.timetoo}</Text>
+            <View style={{ marginBottom: 10, padding: 10}}>
+            <Text style={{ fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.5)', }}>Gementen tijd: van {item.timefr} tot {item.timetoo}</Text>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ marginTop: 8, marginBottom: 8, width: '50%' }}>
                 <Text style={styles.textstyle}>Stikstofdioxide:</Text>
@@ -105,7 +105,7 @@ export class Home extends Component {
             </View>
   
             }
-          keyExtractor={(item) => item} />
+          keyExtractor={(item,index) => index.toString()} />
       </View>
       </View>
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   textstyle:{
     marginTop: 5,
-    color: '#c2ccce',
+    color: '#e1e3e8',
     fontWeight: 'bold'
   },
   topListStyle:{
